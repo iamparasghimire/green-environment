@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% load static %}
+{%load crispy_forms_tags %} 
+
+{% block content %}
+  <main id="main">
+
+    <!-- ======= About Section ======= -->
+    <section id="about" class="about">
+      <div class="container">
+
+        <div class="row">
+          <div class="col-lg-6">
+            <img src="{% static 'assets/img/about.png' %}" class="img-fluid" alt="">
+          </div>
+          <div class="col-lg-6 pt-4 pt-lg-0">
+            <h3><b>🌿  Greening Together for a Sustainable Tomorrow!</b></h3>
+            <p class="font-italic">
+              Welcome to our community dedicated to fostering a sustainable future! . we believe in the power of collective action to create positive change for our environment. Our mission is to unite individuals who share a passion for green living and environmental sustainability. Whether you're a seasoned eco-warrior or just starting your journey towards a greener lifestyle, we invite you to join us.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section><!-- End About Section -->
+
+    <!-- ======= Why Us Section ======= -->
+    <section id="why-us" class="why-us section-bg">
+      <div class="container">
+
+        <div class="row">
+          <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+            <div class="card">
+              <img src="{% static 'assets/img/mission.jpg' %}"  class="card-img-top" alt="..." style="height: 200px;">              <div class="card-icon">
+                <i class="bx bx-book-reader"></i>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title"><a href="">Our Mission</a></h5>
+                <p class="card-text">We envision a world where communities come together to create lasting change for the planet. By fostering collaboration and sharing knowledge, we aim to build a network of individuals committed to making environmentally conscious choices and implementing green initiatives in their daily lives.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+            <div class="card">
+              <img src="{% static 'assets/img/aboutus.png' %}"  class="card-img-top" alt="..." style="height: 200px;">
+              <div class="card-icon">
+                <i class="bx bx-calendar-edit"></i>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title"><a href="">🤝 Why Join Us</a></h5>
+                <p class="card-text">Joining our community means being part of a movement that goes beyond individual actions. Together, we can amplify our impact, share ideas, and work towards creating a more sustainable and eco-friendly world. Whether you're interested in community projects, educational initiatives, or simply connecting with like-minded individuals, there's a place for you here.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+            <div class="card">
+              <img src="{% static 'assets/img/involve.jpg' %}"  class="card-img-top" alt="..." style="height: 200px;">
+              <div class="card-icon">
+                <i class="bx bx-landscape"></i>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title"><a href="">🌍 Get Involved</a></h5>
+                <p class="card-text">Participate in local events, collaborate on green projects, and exchange ideas with our vibrant community. From tree planting initiatives to recycling drives, there are numerous ways to get involved and contribute to a greener environment. Together, we can turn our collective passion into meaningful action.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section><!-- End Why Us Section -->
+
+    <!-- ======= Contact Us Section ======= -->
+    <section id="contact" class="contact section-bg">
+      <div class="container">
+
+        <div class="section-title">
+          <h2>Contact Us</h2>
+        </div>
+
+        <div class="row justify-content-center">
+
+         
+
+          <div class="col-lg-5 col-md-7">
+            <form method="post" action="{% url 'contact_subscribe' %}">
+              {% csrf_token %}
+              {{ contact_form | crispy }}
+              <button style="background-color:#58D68D; color:white; border:none;" type="submit">Submit</button>
+            </form>
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End Contact Us Section -->
+
+  </main><!-- End #main -->
+  {% endblock content %}
