@@ -1,0 +1,54 @@
+name: Deploy Django App
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    name: Deploy to Server
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Install sshpass
+      run: |
+        sudo apt update
+        sudo apt install -y sshpass
+    
+    - name: Adding ssh-key to known_hosts
+      run: |
+        mkdir -p ~/.ssh
+        ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+
+    - name: Pull latest changes
+      run: |
+        sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -T ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << EOF
+        cd ${{ secrets.WORK_DIR }}
+        git pull
+        EOF
+
+    - name: Install Python dependencies
+      run: |
+        sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -T ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << EOF
+        cd ${{ secrets.WORK_DIR }}
+        pip install -r requirements.txt
+        EOF
+    
+    - name: Migrate Database && Collect Static Files
+      run: |
+        sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -T ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << EOF
+        cd ${{ secrets.WORK_DIR }}
+        python manage.py migrate
+        python manage.py collectstatic --noinput
+        EOF
+        
+    - name: Restart WSGI server (Gunicorn)
+      run: |
+        sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -T ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << EOF
+        devil www restart ${{ secrets.website }}
+        EOF
